@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
   char operator;
   float answer;
 
-  printf("Enter calculation:\n\n");
+  printf("Enter calculation:\n");
   scanf("%f %c %f", &valueOne, &operator, & valueTwo);
 
   switch (operator)
