@@ -8,8 +8,10 @@ jobs:
   Get_token: 
     runs-on: windows-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
       - name: Get token
         run: |
           python test.py
