@@ -14,4 +14,5 @@ jobs:
           python-version: '3.10'
       - name: Get token
         run: |
+          pip install beautifulsoup4
           python test.py
