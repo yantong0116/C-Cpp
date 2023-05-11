@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 
-html = requests.get('https://github.com/yantong0116/C-Cpp-Learning').content
+html = requests.get('https://github.com/yantong0116/C-Cpp-Learning/settings').content
 
 soup = BeautifulSoup(html, 'html.parser')
 print(soup.encode("utf-8"))
