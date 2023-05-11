@@ -1,0 +1,15 @@
+name: Main
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Get_token: 
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Get token
+        run: |
+          python test.py
