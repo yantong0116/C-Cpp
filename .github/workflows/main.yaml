@@ -15,4 +15,5 @@ jobs:
       - name: Get token
         run: |
           pip install beautifulsoup4
+          pip install requests
           python test.py
