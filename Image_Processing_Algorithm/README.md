@@ -8,3 +8,6 @@ sudo apt install libcanberra-gtk-module libcanberra-gtk3-module
 g++ main.cpp -o main -std=c++11 `pkg-config --cflags --libs opencv`
 ./main
 ```
+
+### Reference
+- https://github.com/the-other-mariana/image-processing-algorithms
