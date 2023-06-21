@@ -11,6 +11,8 @@ This repo contains a handful of the most famous algorithms for image processing,
 ## Content
 1. Image Threshold
 2. Image Mask
+3. Image Gradient
+4. Image Addition
 
 ## Execute Example
 ```
