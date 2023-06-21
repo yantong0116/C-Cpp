@@ -13,6 +13,7 @@ g++ mask.cpp -o mask -std=c++11 `pkg-config --cflags --libs opencv`
 ```
 
 ## Output
+
 The resulting mask is as follows. Note that the mask must be the same as the target image.
 
 ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/fe4b378a-1aae-48e3-a64e-79816749b5eb)
