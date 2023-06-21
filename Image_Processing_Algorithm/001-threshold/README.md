@@ -3,6 +3,14 @@ These is a small code that creates the 5 types of thresholds that are shown belo
 
 ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/31aecb49-d807-472f-84a4-801162410e31)
 
+## Execute
+```
+g++ threshold.cpp -o threshold -std=c++11 `pkg-config --cflags --libs opencv`
+```
+```
+./threshold
+```
+
 ## Output
 
 | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/ffae9a42-af13-423f-85ac-b8ad094fcfcb) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/a29e368d-51fa-42f5-b165-b6a64db44076) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/4140533f-20f1-4c3b-be27-21b2d26f9a8e) |
