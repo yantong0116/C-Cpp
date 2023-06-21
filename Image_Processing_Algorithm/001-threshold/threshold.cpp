@@ -130,18 +130,19 @@ int main() {
 			}
 		}
 	}
-	//filters
 
+	//filters
 	namedWindow("original", WINDOW_AUTOSIZE);
 	imshow("original", original);
-	namedWindow("binary inv", WINDOW_AUTOSIZE);
-	imshow("binary inv", image3);
+	namedWindow("binary inverse", WINDOW_AUTOSIZE);
+	imshow("binary inverse", image3);
 	namedWindow("threshold", WINDOW_AUTOSIZE);
 	imshow("threshold", image4);
 	namedWindow("tozero", WINDOW_AUTOSIZE);
 	imshow("tozero", image5);
-	namedWindow("tozero inv", WINDOW_AUTOSIZE);
-	imshow("tozero inv", image6);
+	namedWindow("tozero inverse", WINDOW_AUTOSIZE);
+	imshow("tozero inverse", image6);
+
 	//histograms
 	namedWindow("Display window", WINDOW_AUTOSIZE);
 	imshow("Display window", myMat1);
