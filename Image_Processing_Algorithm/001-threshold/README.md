@@ -13,7 +13,7 @@ g++ threshold.cpp -o threshold -std=c++11 `pkg-config --cflags --libs opencv`
 
 ## Output
 
-| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/ffae9a42-af13-423f-85ac-b8ad094fcfcb) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/a29e368d-51fa-42f5-b165-b6a64db44076) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/4140533f-20f1-4c3b-be27-21b2d26f9a8e) |
+| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/dd57c41c-f069-4020-a242-25be48276a75) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/54bce7b9-48fb-4804-82a7-5c6250903f2c) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/53638227-e23b-48bb-a2f7-7bdf25978abe) |
 | :---:   | :---: | :---: |
-| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/e1bcd943-00fe-471b-ac80-a799996028bc) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/29026048-0409-4c94-a1e8-4ea5e07c4f50) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/b1cc4830-8fa9-4bf6-af36-eb881e880da1) |
-| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/c6cc4bda-e915-464e-9228-81540c897c84) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/b3cb3a60-c1f8-4709-a8ea-4b3a44fe60ac) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/a62d108e-d858-4a0a-8187-7f958c0759a5) |
+| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/6f753a74-994a-48cd-8c72-5c0ea9eade6e) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/3d5243fd-94d4-4703-86d5-dc8091ff4afb) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/a6eb4a85-afd1-415a-b666-921bbbae4189) |
+| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/e8a119af-05bf-4ccf-aee8-7faa1bccf082) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/dda9b270-702b-4040-a0a0-0175998b9347) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/561f6144-58f4-43bb-b107-fd36cd40801c) |
