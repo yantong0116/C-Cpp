@@ -1,4 +1,19 @@
+# Image Addition
 
+## Input
+
+| ![robot](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/2339499d-73bb-48b8-8f1a-fc0c55c38eb7) | ![house](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/f4e79704-24e1-4652-938e-5ef16bae2583) |
+| :---:   | :---: |
+
+## Execute
+```
+g++ addition.cpp -o addition -std=c++11 `pkg-config --cflags --libs opencv`
+```
+```
+./addition
+```
+
+## Output
 | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/124fad28-04bd-4855-94e6-5adcb7e37584) | |
 | :---:   | :---: |
 | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/c3c564eb-900f-42fd-b2bb-31807d191d31) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/219aa005-1dce-4ad5-a3b0-f3dfc86f13c6) |
