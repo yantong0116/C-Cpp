@@ -24,3 +24,4 @@ g++ main.cpp -o main -std=c++11 `pkg-config --cflags --libs opencv`
 
 ## Reference
 - https://github.com/the-other-mariana/image-processing-algorithms
+- https://github.com/yantong0116/Qt-5-and-OpenCV-4-Computer-Vision-Projects/
