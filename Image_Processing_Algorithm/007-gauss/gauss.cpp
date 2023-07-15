@@ -10,90 +10,95 @@ using namespace cv;
 int main()
 {
 	// Original images
-	const char* filenameD = "monalisa.jpg";
-	Mat image = imread(filenameD, IMREAD_GRAYSCALE);
-	const char* filenameA = "peppernoise.png";
-	Mat pepperNoise = imread(filenameA, IMREAD_GRAYSCALE);
+	const char* lenna = "lenna.jpg";
+	Mat image = imread(lenna, IMREAD_GRAYSCALE);
+	const char* pepper = "peppernoise.png";
+	Mat pepperNoise = imread(pepper, IMREAD_GRAYSCALE);
 
-	//Mats resutado
+	// Result
 	Mat blur(image.rows, image.cols, CV_8UC1);
-	Mat diferencia(image.rows, image.cols, CV_8UC1);
-	Mat filtroMediana(pepperNoise.rows, pepperNoise.cols, CV_8UC1);
-	Mat gaussiano(image.rows, image.cols, CV_8UC1);
-	Mat gaussiano2(image.rows, image.cols, CV_8UC1);
-	Mat gaussiano3(image.rows, image.cols, CV_8UC1);
+	Mat difference(image.rows, image.cols, CV_8UC1);
+	Mat median_filter(pepperNoise.rows, pepperNoise.cols, CV_8UC1);
+	Mat gaussian(image.rows, image.cols, CV_8UC1);
+	Mat gaussian2(image.rows, image.cols, CV_8UC1);
+	Mat gaussian3(image.rows, image.cols, CV_8UC1);
+
 	int innerMatrixIndex = 3;
 	int tamCampana = 5;
 	int gaussMatrix[3][3] = { { 1,2,1 },{ 2,4,2 },{ 1,2,1 } };
 	int gaussMatrix2[5][5] = { { 1,4,7,4,1 },{ 4,16,26,16,4 },{ 7,26,41,26,7 },{ 4,16,26,16,4 },{ 1,4,7,4,1 } };
-	float suma, promedio;
+	float sum, average;
 	float gauss[25][25] = { 0 };
 
-	//average blur
+	// Average blur
+    // This code performs an average blur operation on the image matrix using a 3x3 kernel. 
+    // It calculates the average value of the pixel intensities within the kernel and assigns the result to the corresponding pixel in the blur matrix.
 	for (int i = 0; i < image.rows; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			suma = 0;
-			promedio = 0;
+			sum = 0;
+			average = 0;
 			for (int a = -(innerMatrixIndex / 2); a <= innerMatrixIndex / 2; a++)
 			{
 				for (int b = -(innerMatrixIndex / 2); b <= innerMatrixIndex / 2; b++)
 				{
-					////// suma
+					// Add
 					if ((i + a) >= 0 &&
 						(i + a) < image.rows &&
 						(j + b) >= 0 &&
 						(j + b) < image.cols)
 					{
-						suma += image.at<uchar>(i + a, j + b);
+						sum += image.at<uchar>(i + a, j + b);
 					}
 				}
 			}
-			/////promedio
-			promedio = float(suma / float(innerMatrixIndex*innerMatrixIndex));
-			///// asignacion
-			blur.at<uchar>(i, j) = promedio;
+			// Average
+			average = float(sum / float(innerMatrixIndex*innerMatrixIndex));
+			// Assignment
+			blur.at<uchar>(i, j) = average;
 		}
 	}
-	//Resta de imagenes
+
+	// Subtraction of images
+    // This code calculates the absolute difference between the corresponding pixels of the image and blur matrices and stores the result in the difference matrix.
 	for (int i = 0; i < image.rows; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			diferencia.at<uchar>(i, j) = abs(image.at<uchar>(i, j) - blur.at<uchar>(i, j));
+			difference.at<uchar>(i, j) = abs(image.at<uchar>(i, j) - blur.at<uchar>(i, j));
 		}
 	}
-	int limite = 40;
-	//umbral
-	for (int i = 0; i < diferencia.rows; i++)
+    int limit = 10; // Threshold
+	for (int i = 0; i < difference.rows; i++)
 	{
-		for (int j = 0; j < diferencia.cols; j++)
+		for (int j = 0; j < difference.cols; j++)
 		{
-			if (diferencia.at<uchar>(i, j) <= limite)
+			if (difference.at<uchar>(i, j) <= limit)
 			{
-				diferencia.at<uchar>(i, j) = 0;
+				difference.at<uchar>(i, j) = 0;
 			}
 			else {
-				diferencia.at<uchar>(i, j) = 255;
+				difference.at<uchar>(i, j) = 255;
 			}
 		}
 		cout << endl;
 	}
-	//Filtro de mediana
-	float mediana = 0;
+
+	// Median filter
+	float median = 0;
 	vector<float> myVector;
 	for (int i = 0; i < pepperNoise.rows; i++)
 	{
 		for (int j = 0; j < pepperNoise.cols; j++)
 		{
-			mediana = 0;
+			median = 0;
 			myVector.clear();
 			for (int a = -(innerMatrixIndex / 2); a <= innerMatrixIndex / 2; a++)
 			{
 				for (int b = -(innerMatrixIndex / 2); b <= innerMatrixIndex / 2; b++)
 				{
-					//agregarlos al vector
+					// Add them to vector
 					if ((i + a) >= 0 &&
 						(i + a) < pepperNoise.rows &&
 						(j + b) >= 0 &&
@@ -104,20 +109,21 @@ int main()
 				}
 			}
 			sort(myVector.begin(), myVector.end());
-			mediana = myVector.at(myVector.size() / 2);
-			///// asignacion
-			filtroMediana.at<uchar>(i, j) = mediana;
+			median = myVector.at(myVector.size() / 2);
+			// Assignment
+			median_filter.at<uchar>(i, j) = median;
 		}
 	}
-	//gaussian blur
-	int suma2 = 0;
-	int promedio2 = 0;
+
+	// Gaussian blur
+	int sum2 = 0;
+	int average2 = 0;
 	for (int i = 0; i < image.rows; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			suma2 = 0;
-			promedio2 = 0;
+			sum2 = 0;
+			average2 = 0;
 
 			int y = 0;
 			for (int a = -(innerMatrixIndex / 2); a <= innerMatrixIndex / 2; a++)
@@ -125,58 +131,60 @@ int main()
 				int x = 0;
 				for (int b = -(innerMatrixIndex / 2); b <= innerMatrixIndex / 2; b++)
 				{
-					////// suma
+					// Addition
 					if ((i + a) >= 0 &&
 						(i + a) < image.rows &&
 						(j + b) >= 0 &&
 						(j + b) < image.cols)
 					{
-						suma2 += int(image.at<uchar>(i + a, j + b)*gaussMatrix[y][x]);
+						sum2 += int(image.at<uchar>(i + a, j + b)*gaussMatrix[y][x]);
 					}
 					x++;
 				}
 				y++;
 			}
 
-			/////promedio
-			promedio2 = int(suma2 / 16);
-			///// asignacion
-			gaussiano.at<uchar>(i, j) = promedio2;
+			// Average
+			average2 = int(sum2 / 16);
+			// Assignment
+			gaussian.at<uchar>(i, j) = average2;
 		}
 	}
-	//gaussian blur 5x5
-	int suma3 = 0;
-	int promedio3 = 0;
+
+	// Gaussian blur 5x5
+	int sum3 = 0;
+	int average3 = 0;
 	for (int i = 0; i < image.rows; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			suma3 = 0;
-			promedio3 = 0;
+			sum3 = 0;
+			average3 = 0;
 			int y1 = 0;
 			for (int a = -(tamCampana / 2); a <= tamCampana / 2; a++)
 			{
 				int x1 = 0;
 				for (int b = -(tamCampana / 2); b <= tamCampana / 2; b++)
 				{
-					////// suma
+					// Addition
 					if ((i + a) >= 0 &&
 						(i + a) < image.rows &&
 						(j + b) >= 0 &&
 						(j + b) < image.cols)
 					{
-						suma3 += int(image.at<uchar>(i + a, j + b)*gaussMatrix2[y1][x1]);
+						sum3 += int(image.at<uchar>(i + a, j + b)*gaussMatrix2[y1][x1]);
 					}
 					x1++;
 				}
 				y1++;
 			}
-			/////promedio
-			promedio3 = int(suma3 / 273);
-			///// asignacion
-			gaussiano2.at<uchar>(i, j) = promedio3;
+			// Average
+			average3 = int(sum3 / 273);
+			// Assignment
+			gaussian2.at<uchar>(i, j) = average3;
 		}
 	}
+
 	int x0 = 25 / 2;
 	int y0 = 25 / 2;
 	int sigma = 3;
@@ -195,54 +203,55 @@ int main()
 		}
 	}
 	
-	float suma4 = 0;
-	int promedio4 = 0;
+	float sum4 = 0;
+	int average4 = 0;
 	for (int i = 0; i < image.rows; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			suma4 = 0;
-			promedio4 = 0;
+			sum4 = 0;
+			average4 = 0;
 			int y4 = 0;
 			for (int a = -(25 / 2); a <= 25 / 2; a++)
 			{
 				int x4 = 0;
 				for (int b = -(25 / 2); b <= 25 / 2; b++)
 				{
-					////// suma
+					// Addition
 					if ((i + a) >= 0 &&
 						(i + a) < image.rows &&
 						(j + b) >= 0 &&
 						(j + b) < image.cols)
 					{
-						suma4 += int(image.at<uchar>(i + a, j + b))*gauss[y4][x4];
+						sum4 += int(image.at<uchar>(i + a, j + b))*gauss[y4][x4];
 					}
 					x4++;
 				}
 				y4++;
 			}
-			/////promedio
-			promedio4 = int(suma4 / sumaFiltro);
-			///// asignacion
-			gaussiano3.at<uchar>(i, j) = promedio4;
+			// Average
+			average4 = int(sum4 / sumaFiltro);
+			// Assignment
+			gaussian3.at<uchar>(i, j) = average4;
 		}
 	}
-	namedWindow("Display window", WINDOW_AUTOSIZE);
-	imshow("Display window", image);
-	namedWindow("Display window1", WINDOW_AUTOSIZE);
-	imshow("Display window1", blur);
-	namedWindow("Display window2", WINDOW_AUTOSIZE);
-	imshow("Display window2", diferencia);
-	namedWindow("Display window3", WINDOW_AUTOSIZE);
-	imshow("Display window3", filtroMediana);
-	namedWindow("Display window4", WINDOW_AUTOSIZE);
-	imshow("Display window4", pepperNoise);
 
-	namedWindow("gaussiano", WINDOW_AUTOSIZE);
-	imshow("gaussiano", gaussiano);
-	namedWindow("gaussiano2", WINDOW_AUTOSIZE);
-	imshow("gaussiano2", gaussiano2);
-	namedWindow("gaussiano3", WINDOW_AUTOSIZE);
-	imshow("gaussiano3", gaussiano3);
+	namedWindow("Original image", WINDOW_AUTOSIZE);
+	imshow("Original image", image);
+	namedWindow("Blur", WINDOW_AUTOSIZE);
+	imshow("Blur", blur);
+	namedWindow("Difference", WINDOW_AUTOSIZE);
+	imshow("Difference", difference);
+	namedWindow("Median filter", WINDOW_AUTOSIZE);
+	imshow("Median filter", median_filter);
+	namedWindow("Pepper noise", WINDOW_AUTOSIZE);
+	imshow("Pepper noise", pepperNoise);
+
+	namedWindow("gaussian", WINDOW_AUTOSIZE);
+	imshow("gaussian", gaussian);
+	namedWindow("gaussian2", WINDOW_AUTOSIZE);
+	imshow("gaussian2", gaussian2);
+	namedWindow("gaussian3", WINDOW_AUTOSIZE);
+	imshow("gaussian3", gaussian3);
 	waitKey(0);
 }
