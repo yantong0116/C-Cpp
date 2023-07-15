@@ -1,4 +1,5 @@
-# Enhanced Image Accentuation with Gaussian Filtering and Sobel Operators
+# Sobel Operators
+#### Enhanced Image Accentuation with Gaussian Filtering and Sobel Operators
 
 ## Execute
 ```
