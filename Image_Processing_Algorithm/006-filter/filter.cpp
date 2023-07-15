@@ -56,7 +56,6 @@ int median(int r, int c) {
 
 int main() {
 	//----------------------------------------------------- Average filter
-
 	for (int i = 0; i < flowers.rows; i++) {
 		for (int j = 0; j < flowers.cols; j++) {
 			average_result.at<uchar>(i, j) = (uchar)(average(i, j));
@@ -80,6 +79,7 @@ int main() {
 			}
 		}
 	}
+	
 	//----------------------------------------------------- Median
 	for (int i = 0; i < flowers.rows; i++) {
 		for (int j = 0; j < flowers.cols; j++) {
