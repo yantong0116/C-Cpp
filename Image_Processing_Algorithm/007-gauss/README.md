@@ -1,4 +1,4 @@
-# Image Equalization
+# Gaussian noise
 
 ## Execute
 ```
