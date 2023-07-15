@@ -14,7 +14,7 @@ int main() {
 	float arr2[256] = { 0 };
 	float arr3[256] = { 0 };
 
-	Mat image = imread("trees.jpg", IMREAD_GRAYSCALE);
+	Mat image = imread("truck.jpg", IMREAD_GRAYSCALE);
 
 	for (int i = 0; i < image.rows; i++) {
 		for (int j = 0; j < image.cols; j++) {
