@@ -2,36 +2,39 @@
 
 ## Concept
 1. Average Blur:
-   - Formula: `average = sum / (innerMatrixIndex * innerMatrixIndex)`
-   - Description: Calculates the average value of pixel intensities within the kernel.
+   - Formula: `average = sum / (kernelSize * kernelSize)`
+   - Description: Calculates the average value of pixel intensities within a square kernel.
 
-2. Absolute Difference:
-   - Formula: `abs_diff = abs(image.at<uchar>(i, j) - blur.at<uchar>(i, j))`
-   - Description: Calculates the absolute difference between corresponding pixels in the `image` and `blur` matrices.
+2. Difference of Images:
+   - Formula: `difference = abs(lennaImage - averageBlur)`
+   - Description: Computes the absolute difference between the pixel intensities of the original image and the average-blurred image.
 
 3. Thresholding:
-   - Formula: If `difference.at<uchar>(i, j) <= limit`, then `difference.at<uchar>(i, j) = 0`. Otherwise, `difference.at<uchar>(i, j) = 255`.
-   - Description: Applies a threshold to the `difference` matrix, setting pixels below the threshold to 0 and above to 255.
+   - Formula: `if (difference <= threshold) difference = 0; else difference = 255;`
+   - Description: Applies a threshold to the difference image, setting pixel values below the threshold to 0 (black) and above the threshold to 255 (white).
 
 4. Median Filter:
-   - Formula: `median = myVector.at(myVector.size() / 2)`
-   - Description: Calculates the median value of pixel intensities within the kernel.
+   - Formula: `medianFilter = median(pixels)`
+   - Description: Applies a median filter to the pepper noise image. The filter selects the median pixel value from a neighborhood of pixels within a kernel.
 
-5. Gaussian Blur:
-   - Formula: `average2 = sum2 / 16`
-   - Description: Calculates the weighted average value of pixel intensities within the Gaussian kernel.
+5. Gaussian Blur (3x3):
+   - Formula: average = sum / 16
+   - Description: Applies a Gaussian blur to the original image using a 3x3 Gaussian kernel. The kernel weights each pixel intensity with a predefined Gaussian weight.
 
-6. Gaussian Blur 5x5:
-   - Formula: `average3 = sum3 / 273`
-   - Description: Calculates the weighted average value of pixel intensities within the larger Gaussian kernel.
+6. Gaussian Blur (5x5):
+   - Formula: `average = sum / 273`
+   - Description: Applies a Gaussian blur to the original image using a 5x5 Gaussian kernel. The kernel weights each pixel intensity with a predefined Gaussian weight.
 
-7. Gaussian Filter (25x25):
+7. Custom Gaussian Blur (25x25):
    - Formulas:
-     - `up = (cX * cX) + (cY * cY)`
-     - `exp1 = exp(-(up) / (down))`
-     - `gauss[i][j] = constant * exp1`
-     - `average4 = sum4 / sumaFiltro`
-   - Description: Calculates the Gaussian weights for the 25x25 kernel and applies Gaussian filtering on the image.
+     - Calculate Gaussian kernel weights:
+       - `exponent = -(deltaX^2 + deltaY^2) / (2 * sigma^2)`
+       - `constant = 1 / (sigma^2 * 2 * pi)`
+       - `gaussianKernel[i][j] = constant * exp(exponent)`
+     - Calculate average:
+       - `average = sum / sumFilter`
+   - Description: Applies a custom Gaussian blur to the original image using a 25x25 Gaussian kernel. The kernel weights each pixel intensity based on the distance from the center of the kernel, following a Gaussian distribution.
+
 
 ## Execute
 ```
@@ -41,19 +44,23 @@ g++ gauss.cpp -o gauss -std=c++11 `pkg-config --cflags --libs opencv`
 ./gauss
 ```
 
-## Output
+## Image
 
-### Original
-![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/eca4d967-9a00-4f30-a1e9-e43050a542b4)
+### Original Image
+![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/9b768f8e-7a0b-4cdd-b21d-4448d4eadd00)
 
-| Pepper noise | Median filter |
+### Process
+| Pepper Noise | Median Filter |
 | :---:   | :---: |
-| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/3d7e45bd-6e45-4ad9-9309-838915e952a8) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/bcde6111-c846-408c-93c1-74879ec008ba) |
+| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/a70a93a9-fa66-4606-84b3-75cffe4c38ee) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/f342dba8-bb09-45aa-981a-f504fbb23fe4) | 
 
-| Blur | Difference |
+### Output
+| Average Blur | Difference |
 | :---:   | :---: |
-| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/485b02d8-0332-4b13-8332-be94da371102) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/dd33b0d7-197f-455c-a88f-34a3e5699f33) |
-| Gaussian | Gaussian2 | 
-| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/2023b7c0-7ca7-4d90-ad3d-24068da59256) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/dd8bea23-a310-47f5-81c3-79a1679d50a3) |
-| Gaussian3 | |
-| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/19d145f9-6941-441f-be8c-9ab1cfd56f8c) | |
+| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/4359eca9-5335-48e9-b601-e9719d7b5d55) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/143eed37-f269-40cb-a4e4-4c75f15a902c) |
+| **Gaussian Blur 3x3** | **Gaussian Blur 5x5** |
+| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/67eb9656-6f15-4385-86ac-0c76b20d72b8) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/8b40878d-f8f0-470a-bfdb-aee25658329d) | 
+| **Custom Gaussian Blur** | |
+| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/fdc7dd67-d752-4a65-8d5f-0e4417d474e6) | |
+
+
