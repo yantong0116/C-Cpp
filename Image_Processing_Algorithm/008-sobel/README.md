@@ -4,31 +4,30 @@
 ## Concept
 
 1. Gaussian Kernel Formula:
-   - Formula: ![Gaussian Kernel Formula](https://latex.codecogs.com/png.latex?\text{gaussianKernel}[i][j]\%20=%20\text{constant}%20*%20\exp\left(-\frac{x_{\text{Distance}}^2%20+%20y_{\text{Distance}}^2}{2%20\sigma^2}\right))
+   - Formula: `gaussianKernel[i][j] = constant * exp(-(xDistance * xDistance + yDistance * yDistance) / (2 * sigma * sigma))`
    - Purpose: Calculates the values of a Gaussian kernel used for Gaussian filtering.
 
 2. Gaussian Filtering Formula:
-   - Formula: ![Gaussian Filtering Formula](https://latex.codecogs.com/png.latex?\text{sum}%20+%3D%20\text{originalImage}(row,%20col)%20*%20\text{gaussianKernel}[a%20+%20x_{\text{Center}}][b%20+%20y_{\text{Center}}])
+   - Formula: `sum += originalImage.at<uchar>(row, col) * gaussianKernel[a + xCenter][b + yCenter]`
    - Purpose: Applies Gaussian filtering to an image by convolving the image with the Gaussian kernel.
 
 3. Sharp Changes Calculation Formula:
-   - Formula: ![Sharp Changes Calculation Formula](https://latex.codecogs.com/png.latex?\text{sharpChanges}(i,%20j)%20=%20\text{originalImage}(i,%20j)%20-%20\text{gaussianFiltered3}(i,%20j))
+   - Formula: `sharpChanges.at<float>(i, j) = originalImage.at<uchar>(i, j) - gaussianFiltered3.at<uchar>(i, j)`
    - Purpose: Calculates the sharp changes in pixel intensities by subtracting the Gaussian filtered image from the original image.
 
 4. Accentuated Image Formula:
-   - Formula: ![Accentuated Image Formula](https://latex.codecogs.com/png.latex?\text{accentuatedImage}(i,%20j)%20=%20\begin{cases}%20255%20&%20\text{if}%20\text{pixelValue}%20>%20255%20\\%20\text{pixelValue}%20&%20\text{otherwise}%20\end{cases})
+   - Formula: `accentuatedImage.at<uchar>(i, j) = (pixelValue > 255) ? 255 : static_cast<uchar>(pixelValue)`
    - Purpose: Generates an accentuated image by adding the sharp changes to the original image, clipping the pixel values to the range [0, 255].
 
 5. Sobel Operators Formula:
    - Horizontal Sobel: Calculates the gradient in the x-direction.
    - Vertical Sobel: Calculates the gradient in the y-direction.
-   - Formula: ![Sobel Operators Formula](https://latex.codecogs.com/png.latex?\text{sobelHorizontal}(i,%20j)%20=%20\frac{\text{sumH}}{255.0}) and ![Sobel Operators Formula](https://latex.codecogs.com/png.latex?\text{sobelVertical}(i,%20j)%20=%20\frac{\text{sumV}}{255.0})
+   - Formulas: `sobelHorizontal.at<float>(i, j) = sumH / 255.0` and `sobelVertical.at<float>(i, j) = sumV / 255.0`
    - Purpose: Computes the Sobel operators for edge detection by convolving the image with the respective Sobel kernels.
 
 6. Vector Summation Formula:
-   - Formula: ![Vector Summation Formula](https://latex.codecogs.com/png.latex?\text{rootImage}(i,%20j)%20=%20\sqrt{x_{\text{Value}}%20+%20y_{\text{Value}}})
+   - Formula: `rootImage.at<float>(i, j) = sqrt(xValue + yValue)`
    - Purpose: Calculates the magnitude of the gradient vector by taking the square root of the sum of squared gradient values obtained from the horizontal and vertical Sobel operators.
-
 
 ## Execute
 ```
