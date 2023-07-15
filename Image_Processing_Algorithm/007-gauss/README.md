@@ -1,5 +1,38 @@
 # Gaussian noise
 
+## Concept
+1. Average Blur:
+   - Formula: `average = sum / (innerMatrixIndex * innerMatrixIndex)`
+   - Description: Calculates the average value of pixel intensities within the kernel.
+
+2. Absolute Difference:
+   - Formula: `abs_diff = abs(image.at<uchar>(i, j) - blur.at<uchar>(i, j))`
+   - Description: Calculates the absolute difference between corresponding pixels in the `image` and `blur` matrices.
+
+3. Thresholding:
+   - Formula: If `difference.at<uchar>(i, j) <= limit`, then `difference.at<uchar>(i, j) = 0`. Otherwise, `difference.at<uchar>(i, j) = 255`.
+   - Description: Applies a threshold to the `difference` matrix, setting pixels below the threshold to 0 and above to 255.
+
+4. Median Filter:
+   - Formula: `median = myVector.at(myVector.size() / 2)`
+   - Description: Calculates the median value of pixel intensities within the kernel.
+
+5. Gaussian Blur:
+   - Formula: `average2 = sum2 / 16`
+   - Description: Calculates the weighted average value of pixel intensities within the Gaussian kernel.
+
+6. Gaussian Blur 5x5:
+   - Formula: `average3 = sum3 / 273`
+   - Description: Calculates the weighted average value of pixel intensities within the larger Gaussian kernel.
+
+7. Gaussian Filter (25x25):
+   - Formulas:
+     - `up = (cX * cX) + (cY * cY)`
+     - `exp1 = exp(-(up) / (down))`
+     - `gauss[i][j] = constant * exp1`
+     - `average4 = sum4 / sumaFiltro`
+   - Description: Calculates the Gaussian weights for the 25x25 kernel and applies Gaussian filtering on the image.
+
 ## Execute
 ```
 g++ gauss.cpp -o gauss -std=c++11 `pkg-config --cflags --libs opencv`
