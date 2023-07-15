@@ -1,4 +1,4 @@
-# Image Equalization
+# Image Filter
 
 ## Execute
 ```
