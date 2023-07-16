@@ -2,7 +2,16 @@
 
 ## Concept
 
-## Execute
+
+## Execute 1
+```
+g++ enhancement.cpp -o enhancement -std=c++11 `pkg-config --cflags --libs opencv`
+```
+```
+./enhancement
+```
+
+## Execute 2
 ```
 g++ sobel-prewitt-roberts.cpp -o sobel-prewitt-roberts -std=c++11 `pkg-config --cflags --libs opencv`
 ```
@@ -10,11 +19,16 @@ g++ sobel-prewitt-roberts.cpp -o sobel-prewitt-roberts -std=c++11 `pkg-config --
 ./sobel-prewitt-roberts
 ```
 
-## Image
+
 ### Original Image
 ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/33b28bcc-de29-4918-be2f-e9176aed63db)
 
-### Output
+### Output 1
+| Gaussian Filtered Image | Sharpness Difference | Enhanced Image |
+| :---: | :---: | :---: |
+|  |  |  |
+
+### Output 2
 | Sobel Horizontal | Sobel Vertical | Sobel Gradient Magnitude | 
 | :---: | :---: | :---: |
 | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/26019d75-e006-45d5-8c11-85c33cd101cd) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/8235c55b-a34d-452b-9f35-fd9b0cae7d9a) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/7638f818-7b64-408f-a3b7-ad9b94a05865) |
