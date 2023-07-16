@@ -19,6 +19,7 @@ This repo contains a handful of the most famous algorithms for image processing,
 8. Sobel
 9. Sobel, Prewitt, Roberts
 10. Regions
+11. Dilation, Erosion
 
 ## Execute Example
 ```
