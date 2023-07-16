@@ -1,5 +1,5 @@
 # Regions
-#### Count the regions
+**Count the regions**
 
 ## Execute
 ```
