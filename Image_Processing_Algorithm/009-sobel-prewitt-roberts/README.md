@@ -1,7 +1,51 @@
-# Sobel Prewitt Roberts
+# Enhancement and Sobel Prewitt Roberts
 
 ## Concept
+### Enhancement
+1. Gaussian Filter Calculation
 
+<p align="center">
+<img src="https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/b6126583-33e0-45ff-a430-ed45b57064c0"/>
+</p>
+
+2. Sharpness Difference Calculation
+
+<p align="center">
+<img src="https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/fe0349ff-04e1-4694-9063-7f61099541ca"/>
+</p>
+
+3. Enhanced Image Calculation
+<p align="center">
+<img src="https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/d81ffeb7-ae30-44af-93fc-8a72c8aa97ed"/>
+</p>
+
+### Sobel Prewitt Roberts
+1. Sobel Operator
+<p align="center">
+<img src="https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/cd103deb-96e6-4476-af5d-53bcb59c5f96"/>
+</p>
+
+<p align="center">
+<img src="https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/f2b5e061-303a-497b-9011-2a08a565f6df"/>
+</p>
+
+2. Prewitt Operator
+<p align="center">
+<img src="https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/04e41134-2d88-4ee6-80a7-c27340a65c0b"/>
+</p>
+
+<p align="center">
+<img src="https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/d63ffa9d-0728-41c8-87d3-4f30421928c2"/>
+</p>
+
+3. Roberts Operator
+<p align="center">
+<img src="https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/1c0426c7-12e1-44b4-9e70-941feeffa318"/>
+</p>
+
+<p align="center">
+<img src="https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/daf301bb-0d1d-4d15-854d-5dcb366236b9"/>
+</p>
 
 ## Execute 1
 ```
@@ -26,7 +70,7 @@ g++ sobel-prewitt-roberts.cpp -o sobel-prewitt-roberts -std=c++11 `pkg-config --
 ### Output 1
 | Gaussian Filtered Image | Sharpness Difference | Enhanced Image |
 | :---: | :---: | :---: |
-|  |  |  |
+| ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/c14b8667-b93e-4922-8909-2883f699fa4c) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/8787e0bd-2481-4994-90dd-936710e0864e) | ![image](https://github.com/yantong0116/C-Cpp-Learning/assets/51469882/b1e85932-ca32-4689-916c-abaa7ee3bd4b) |
 
 ### Output 2
 | Sobel Horizontal | Sobel Vertical | Sobel Gradient Magnitude | 
