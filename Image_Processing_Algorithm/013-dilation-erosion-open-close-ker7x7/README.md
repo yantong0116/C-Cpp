@@ -1,4 +1,4 @@
-# Opening and Closing
+# Dilation Erosion Opening Closing with ker 7x7
 
 ## Execute
 ```
