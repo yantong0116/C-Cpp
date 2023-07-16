@@ -2,36 +2,42 @@
 ## Concept
 ### Dilation
 - Original Image
+```
 0 0 0 0 0 0 0
 0 1 1 1 0 0 0
 0 1 1 1 0 0 0
-
+```
 - Structuring Element
+```
 0 1 0
 1 1 1
 0 1 0
-
+```
 - Dilation Result
+```
 0 1 1 1 0 0 0
 1 1 1 1 1 1 0
 1 1 1 1 1 1 0
-
+```
 ### Erosion
 - Original Image
+```
 1 1 1 0 0 0 0
 1 1 1 0 0 0 0
 1 1 1 0 0 0 0
-
+```
 - Structuring Element
+```
 0 1 0
 1 1 1
 0 1 0
-
+```
 - Erosion Result
+```
 0 0 0 0 0 0 0
 0 0 0 0 0 0 0
 0 0 0 0 0 0 0
-
+```
 ## Execute
 ```
 g++ dilation-erosion.cpp -o dilation-erosion -std=c++11 `pkg-config --cflags --libs opencv`
