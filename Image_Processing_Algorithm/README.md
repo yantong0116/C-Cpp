@@ -9,10 +9,15 @@ This repo contains a handful of the most famous algorithms for image processing,
 - sudo apt install libcanberra-gtk-module libcanberra-gtk3-module
 
 ## Content
-1. Image Threshold
-2. Image Mask
-3. Image Gradient
-4. Image Addition
+1. Threshold
+2. Mask
+3. Gradient
+4. Addition
+5. Equalization
+6. Filter
+7. Gaussian
+8. Sobel
+9. Sobel, Prewitt, Roberts
 
 ## Execute Example
 ```
