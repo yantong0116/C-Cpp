@@ -6,7 +6,7 @@ This course aims to introduce the **design and implementation of operating syste
 This course uses **Raspberry Pi 3 Model B+ (rpi3 for short)** as the hardware platform.
 
 ## Execute
-QEMU debug
+#### QEMU debug
 
 ```
 qemu-system-aarch64 -M raspi3b -kernel kernel8.img -display none -S -s
