@@ -1,7 +1,7 @@
 # Lab 2 : Booting
 
 ## Introduction
-Booting is the process to set up the environment to run various user programs after a computer reset. It includes a kernel loaded by bootloader, subsystems initialization, device-driver matching, and loading the init user program to bring up the remaining services in userspace.
+**Booting** is the process to **set up the environment to run various user programs after a computer reset**. It includes a kernel loaded by bootloader, subsystems initialization, device-driver matching, and loading the init user program to bring up the remaining services in userspace.
 
 In Lab 2, you’ll learn one of the methods to load your kernel and user programs. Also, you’ll learn how to match a device to a driver on rpi3. The initialization of the remaining subsystems will be introduced at later labs.
 
@@ -21,7 +21,7 @@ There are 4 steps before your kernel starts its execution.
 
 The kernel loaded at step 4 can also be another bootloader with more powerful functionalities such as network booting, or ELF loading.
 
-In Lab 2, you’ll implement a bootloader that loads the actual kernel through UART, and it’s loaded by the previous stage bootloader.
+In Lab 2, you’ll **implement a bootloader that loads the actual kernel through UART, and it’s loaded by the previous stage bootloader**.
 
 ## Exercises
 ### Basic Exercise 1 - UART Bootloader
@@ -35,7 +35,9 @@ You can effectively write data from the host to rpi3 by serial device’s device
 with open('/dev/ttyUSB0', "wb", buffering = 0) as tty:
   tty.write(...)
 ```
-> __Note__
+
+> __Hint__
+> 
 > You can use <font color="red">qemu-system-aarch64 -serial null -serial pty</font> to create a pseudo TTY device and test your bootloader through it.
 
 #### Config Kernel Loading Setting
@@ -51,9 +53,11 @@ arm_64bit=1
 ```
 
 > **Todo**
+> 
 > Implement a UART bootloader that loads kernel images through UART.
 
 > **Important**
+> 
 > UART is a low-speed interface. It’s okay to send your kernel image because it’s quite small. Don’t use it to send large binary files.
 
 ### Basic Exercise 2 - Initial Ramdisk
@@ -92,6 +96,7 @@ initramfs initramfs.cpio 0x20000000
 ```
 
 > **Todo**
+> 
 > Parse New ASCII Format Cpio archive, and read file’s content given file’s pathname.
 
 ![image](https://github.com/yantong0116/OS/assets/51469882/bf9e8bda-e679-4850-a4af-d4cd19b60fac)
@@ -104,9 +109,11 @@ initramfs initramfs.cpio 0x20000000
 Kernel needs an allocator in the progress of subsystem initialization. However, the dynamic allocator is also a subsystem that need to be initialized. So we need a simple allocator in the early stage of booting.
 
 > **Todo**
+> 
 > Implement a alloc function that returns a pointer points to a continuous space for requested size.
 
 > **Hint**
+> 
 > Your allocator don’t need to support free function.
 
 The folloing code is a breif example:
@@ -120,22 +127,75 @@ int main() {
 }
 ```
 
-### Advanced Exercise 1 - Bootloader Self Relocation
+## Advanced Exercise
 
+### Advanced Exercise 1 - Devicetree
 
-### Advanced Exercise 2 - Devicetree
+During the booting process, a kernel should know what devices are currently connected and use the corresponding driver to initialize and access it. For powerful buses such as PCIe and USB, the kernel can detect what devices are connected by querying the bus’s registers. Then, it matches the device’s name with all drivers and uses the compatible driver to initialize and access the device.
 
+However, for a computer system with a simple bus, a kernel can’t detect what devices are connected. One approach to drive these devices is as you did in Lab 1; developers know what’s the target machine to be run on and hard code the io memory address in their kernel. It turns out the driver code becomes not portable.
 
-## Implement
-### Execute lab2
-#### Generate initramfs.cpio
+A cleaner approach is a file describing what devices are on a computer system. Also, it records the properties and relationships between each device. Then, a kernel can query this file as querying like powerful bus systems to load the correct driver. The file is called deivcetree.
+
+#### Format
+
+Devicetree has two formats devicetree source(dts) and flattened devicetree(dtb). Devicetree source describes device tree in human-readable form. It’s then compiled into flattened devicetree so the parsing can be simpler and faster in slow embedded systems.
+
+You can read rpi3’s dts from raspberry pi’s linux repository
+
+You can get rpi3’s dtb by either compiling it manually or downloading the off-the-shelf one.
+
+#### Parsing
+
+In this advanced part, you should implement a parser to parse the flattened devicetree. Besides, your kernel should provide an interface that takes a callback function argument. So a driver code can walk the entire devicetree to query each device node and match itself by checking the node’s name and properties.
+
+You can get the latest specification from the devicetree’s official website. Then follow the order Chapter 5, 2, 3 and read rpi3’s dts to implement your parser.
+
+#### Dtb Loading
+
+A bootloader loads a dtb into memory and passes the loading address specified at register x0 to the kernel. Besides, it modifies the original dtb content to match the actual machine setting. For example, it adds the initial ramdisk’s loading address in dtb if you ask the bootloader to load an initial ramdisk.
+
+**QEMU**
+
+Add the argument -dtb bcm2710-rpi-3-b-plus.dtb to QEMU.
+
+**Rpi3**
+
+Move bcm2710-rpi-3-b-plus.dtb into SD card.
+
+> **Todo**
+> 
+> Implement a parser that can iterate the device tree. Also, provide an API that takes a callback function, so the driver code can access the content of the device node during device tree iteration.
+
+The folloing code is a breif example of the API. You can design it in your own way.
+
+```
+void initramfs_callback(...) {
+  ...
+}
+
+int main() {
+  fdt_traverse(initramfs_callback);
+}
+```
+
+> **Todo**
+> 
+> Use the API to get the address of initramfs instead of hardcoding it.
+
+> **Todo**
+> 
+> Modify your bootloader for passing the device tree loading address.
+
+## Execute
+### Generate initramfs.cpio
 ```console
 cd create_fs
 bash create_cpio.sh
 ```
 
-#### Copy create_fs/initramfs.cpio to kernel/initramfs.cpio
-#### Generate kernel/build
+### Copy create_fs/initramfs.cpio to kernel/initramfs.cpio
+### Generate kernel/build
 ```console
 cd kernel
 make
