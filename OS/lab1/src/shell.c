@@ -8,7 +8,6 @@ struct CLI_CMDS cmd_list[CLI_MAX_CMD]=
     {.command="hello", .help="print Hello World!"},
     {.command="help", .help="print all available commands"},
     {.command="info", .help="get device information via mailbox"},
-    {.command="reboot", .help="reboot the device"}
 };
 
 int cli_cmd_strcmp(const char* p1, const char* p2)
@@ -23,7 +22,7 @@ int cli_cmd_strcmp(const char* p1, const char* p2)
         if ( c1 == '\0' ) return c1 - c2;
     } while ( c1 == c2 );
     return c1 - c2;
-}
+} 
 
 void cli_cmd_clear(char* buffer, int length)
 {
