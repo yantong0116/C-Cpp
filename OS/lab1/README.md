@@ -75,6 +75,7 @@ Get the hardware’s information is the easiest thing could be done by mailbox. 
 
 ```
 shell.c
+mbox.c
 ```
 
 ## Implement
