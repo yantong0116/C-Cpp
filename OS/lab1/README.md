@@ -91,4 +91,5 @@ make
 make run
 ```
 
-![image](https://user-images.githubusercontent.com/51469882/224073424-37e8510e-a8a0-4274-93b9-3510a744166a.png)
+![image](https://github.com/yantong0116/C-Cpp/assets/51469882/5d56a3b2-7171-4065-bb79-d1ae557aa8c8)
+
