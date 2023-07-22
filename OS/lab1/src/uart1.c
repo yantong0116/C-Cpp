@@ -6,7 +6,7 @@ void uart_init()
 {
     register unsigned int r;
 
-    /* initialize UART */
+    /* initialize UART */ 
     *AUX_ENABLES     |= 1;       // enable UART1
     *AUX_MU_CNTL_REG  = 0;       // disable TX/RX 
 
