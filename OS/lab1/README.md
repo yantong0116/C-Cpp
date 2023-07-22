@@ -12,10 +12,10 @@ In Lab 1, you will practice bare metal programming by implementing a simple shel
 ## Exercises
 ### Basic Exercise 1 - Basic Initialization
 
-When a program is loaded, it requires,
+When a program is loaded, it requires, 
 - All it’s data is presented at correct memory address.
 - The program counter is set to correct memory address.
-- The bss segment are initialized to 0.
+- The bss segment are initialized to 0. 
 - The stack pointer is set to a proper address.
 
 After rpi3 booting, its booloader loads kernel8.img to physical address 0x80000, and start executing the loaded program. **If the linker script is correct, the above two requirements are met**.
