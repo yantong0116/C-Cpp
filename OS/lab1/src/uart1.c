@@ -8,7 +8,7 @@ void uart_init()
 
     /* initialize UART */
     *AUX_ENABLES     |= 1;       // enable UART1
-    *AUX_MU_CNTL_REG  = 0;       // disable TX/RX
+    *AUX_MU_CNTL_REG  = 0;       // disable TX/RX 
 
     /* configure UART */
     *AUX_MU_IER_REG   = 0;       // disable interrupt
