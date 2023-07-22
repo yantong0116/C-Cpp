@@ -25,3 +25,4 @@ https://github.com/CRTao/osc2023
 2. [曹孝櫟老師 - 作業系統設計與實作](https://www.youtube.com/playlist?list=PLj6E8qlqmkFvCxHVYYVYtnPuQb3NeOlUb)
 3. https://hackmd.io/@O3vqd41hS8qfFYxGORVmnw/Alvie
 4. https://qemu-project.gitlab.io/qemu/system/gdb.html
+5. https://hackmd.io/@posutsai/SyNzl72f4?type=view#Bomb-Lab-%E5%AF%A6%E4%BD%9C%E7%B4%80%E9%8C%84
