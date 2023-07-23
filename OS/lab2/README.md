@@ -76,6 +76,10 @@ arm_64bit=1
 > 
 > UART is a low-speed interface. It’s okay to send your kernel image because it’s quite small. Don’t use it to send large binary files.
 
+```
+send_image_to_bootloader.py
+```
+
 ### Basic Exercise 2 - Initial Ramdisk
 
 After a kernel is initialized, it mounts a root filesystem and runs an init user program. The init program can be a script or executable binary to bring up other services or load other drivers later on.
@@ -83,6 +87,14 @@ After a kernel is initialized, it mounts a root filesystem and runs an init user
 However, you haven’t implemented any filesystem and storage driver code yet, so you can’t load anything from the SD card using your kernel. Another approach is loading user programs through the initial ramdisk.
 
 An initial ramdisk is a file loaded by a bootloader or embedded in a kernel. It’s usually an archive that can be extracted to build a root filesystem.
+
+```
+初始化內核後，它會掛載一個根文件系統並運行一個init用戶程序。 init程序可以是一個腳本或可執行二進製文件，用於在稍後啟動其他服務或加載其他驅動程序。
+
+然而，由於您尚未實現任何文件系統和存儲驅動程序代碼，所以無法使用您的內核從SD卡加載任何內容。另一種方法是通過初始ramdisk加載用戶程序。
+
+初始ramdisk是由引導加載程序加載或嵌入在內核中的文件。它通常是一個歸檔文件，可以被提取出來以構建一個根文件系統。
+```
 
 #### New ASCII Format Cpio Archive
 
@@ -103,14 +115,6 @@ cd ..
 **QEMU**
 Add the argument **-initrd <cpio archive>** to QEMU. QEMU loads the cpio archive file to 0x8000000 by default.
 
-**Rpi3**
-
-Move the cpio archive into SD card. Then specify the name and loading address in **config.txt**.
-
-```
-initramfs initramfs.cpio 0x20000000
-```
-
 > **Todo**
 > 
 > Parse New ASCII Format Cpio archive, and read file’s content given file’s pathname.
@@ -120,6 +124,11 @@ initramfs initramfs.cpio 0x20000000
 > **Important**
 > 
 > In Lab 2, you only need to **put some plain text files inside your archive** to test the functionality. In the later labs, you will also put script files and executables inside to automate the testing.
+
+```
+create_cpio.sh
+makefile
+```
 
 ### Basic Exercise 3 - Simple Allocator
 
@@ -205,7 +214,9 @@ int main() {
 > 
 > Modify your bootloader for passing the device tree loading address.
 
-## Execute
+---
+
+## Implement
 ### Generate initramfs.cpio
 ```console
 cd create_fs
