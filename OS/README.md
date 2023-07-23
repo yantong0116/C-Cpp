@@ -3,13 +3,13 @@ https://oscapstone.github.io/index.html
 
 This course aims to introduce the **design and implementation of operating system kernels**. You’ll learn both concept and implementation from a series of labs.
 
-This course uses **Raspberry Pi 3 Model B+ (rpi3 for short)** as the hardware platform.
+This course uses **Raspberry Pi 3 Model B+** as the hardware platform.
 
-### Raspberry Pi Broadcom BCM2837
+## Raspberry Pi Broadcom BCM2837
 
 
-#### BCM2837 pdf
-- https://cs140e.sergio.bz/docs/BCM2837-ARM-Peripherals.pdf
+- BCM2837 pdf
+  - https://cs140e.sergio.bz/docs/BCM2837-ARM-Peripherals.pdf
 
 | Raspberry Pi Broadcom BCM2837 | Raspberry Pi Broadcom BCM2837 Info |
 | --- | --- |
