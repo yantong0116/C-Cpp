@@ -50,7 +50,7 @@ with open('/dev/ttyUSB0', "wb", buffering = 0) as tty:
 > 
 > You can use <font color="red">qemu-system-aarch64 -serial null -serial pty -M raspi3b</font> to create a pseudo TTY device and test your bootloader through it.
 
-![Alt text](image.png)
+![image](https://github.com/yantong0116/C-Cpp/assets/51469882/ca5506ce-134f-41e8-898c-82d0202be701)
 
 #### Config Kernel Loading Setting
 
