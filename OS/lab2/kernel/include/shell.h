@@ -16,13 +16,11 @@ void cli_cmd_read(char*);
 void cli_cmd_exec(char*);
 void cli_print_banner();
 
-void do_cmd_cat(char*);
 void do_cmd_dtb();
 void do_cmd_help();
 void do_cmd_hello();
 void do_cmd_info();
 void do_cmd_malloc();
 void do_cmd_ls(char*);
-void do_cmd_reboot();
 
 #endif /* _SHELL_H_ */
