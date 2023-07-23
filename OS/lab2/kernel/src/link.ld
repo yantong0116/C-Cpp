@@ -23,5 +23,4 @@ SECTIONS
         _stack_top = .;
     }
     _end = .;
-
 }
