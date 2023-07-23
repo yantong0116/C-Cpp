@@ -9,14 +9,15 @@ This course uses **Raspberry Pi 3 Model B+ (rpi3 for short)** as the hardware pl
 
 
 #### BCM2837 pdf
-https://cs140e.sergio.bz/docs/BCM2837-ARM-Peripherals.pdf
+- https://cs140e.sergio.bz/docs/BCM2837-ARM-Peripherals.pdf
 
-|  |  |
+| Raspberry Pi Broadcom BCM2837 | Raspberry Pi Broadcom BCM2837 Info |
 | --- | --- |
 | ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/574ac2f5-90d2-40af-8fc2-ebcbfd3f4f60) | ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/fec02f71-3a09-4ddb-9e46-45adeef3f818) |
 
+![image](https://github.com/yantong0116/C-Cpp/assets/51469882/f372fa6e-6aa3-43e6-9f51-498e3c2a238a)
 
-![image](https://github.com/yantong0116/C-Cpp/assets/51469882/f4c653b5-b06e-4cde-9ddd-2d5992423576)
+**rpi_gpio.h**
 
 ```c
 #ifndef _RPI_GPIO_H_
