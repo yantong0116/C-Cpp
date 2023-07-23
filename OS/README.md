@@ -7,11 +7,44 @@ This course uses **Raspberry Pi 3 Model B+ (rpi3 for short)** as the hardware pl
 
 ### Raspberry Pi Broadcom BCM2837
 
-https://tc.gts3.org/cs3210/2020/spring/l/lec05/lec05.html
+
+#### BCM2837 pdf
+https://cs140e.sergio.bz/docs/BCM2837-ARM-Peripherals.pdf
 
 |  |  |
 | --- | --- |
 | ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/574ac2f5-90d2-40af-8fc2-ebcbfd3f4f60) | ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/fec02f71-3a09-4ddb-9e46-45adeef3f818) |
+
+
+![image](https://github.com/yantong0116/C-Cpp/assets/51469882/f4c653b5-b06e-4cde-9ddd-2d5992423576)
+
+```c
+#ifndef _RPI_GPIO_H_
+#define _RPI_GPIO_H_
+
+#include "bcm2837/rpi_base.h"
+
+#define GPFSEL0         ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200000))
+#define GPFSEL1         ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200004))
+#define GPFSEL2         ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200008))
+#define GPFSEL3         ((volatile unsigned int*)(PERIPHERAL_BASE+0x0020000C))
+#define GPFSEL4         ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200010))
+#define GPFSEL5         ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200014))
+#define GPSET0          ((volatile unsigned int*)(PERIPHERAL_BASE+0x0020001C))
+#define GPSET1          ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200020))
+#define GPCLR0          ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200028))
+#define GPLEV0          ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200034))
+#define GPLEV1          ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200038))
+#define GPEDS0          ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200040))
+#define GPEDS1          ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200044))
+#define GPHEN0          ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200064))
+#define GPHEN1          ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200068))
+#define GPPUD           ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200094))
+#define GPPUDCLK0       ((volatile unsigned int*)(PERIPHERAL_BASE+0x00200098))
+#define GPPUDCLK1       ((volatile unsigned int*)(PERIPHERAL_BASE+0x0020009C))
+
+#endif /*_RPI_GPIO_H_*/
+```
 
 ## Execute
 #### QEMU debug
@@ -34,3 +67,5 @@ https://github.com/CRTao/osc2023
 3. https://hackmd.io/@O3vqd41hS8qfFYxGORVmnw/Alvie
 4. https://qemu-project.gitlab.io/qemu/system/gdb.html
 5. https://hackmd.io/@posutsai/SyNzl72f4?type=view#Bomb-Lab-%E5%AF%A6%E4%BD%9C%E7%B4%80%E9%8C%84
+6. https://tc.gts3.org/cs3210/2020/spring/l/lec05/lec05.html
+
