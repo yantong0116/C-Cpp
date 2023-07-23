@@ -190,24 +190,3 @@ int main() {
 > **Todo**
 > 
 > Modify your bootloader for passing the device tree loading address.
-
----
-
-## Implement
-### Generate initramfs.cpio
-
-```console
-cd create_fs
-bash create_cpio.sh
-```
-
-### Copy create_fs/initramfs.cpio to kernel/initramfs.cpio
-### Generate kernel/build
-```console
-cd kernel
-make
-```
-
-```console
-make run
-```
