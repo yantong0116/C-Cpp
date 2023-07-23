@@ -1,45 +1,38 @@
 # Lab 2 : Booting
 
 ## Introduction
-**Booting** is the process to **set up the environment to run various user programs after a computer reset**. It includes a kernel loaded by bootloader, subsystems initialization, device-driver matching, and loading the init user program to bring up the remaining services in userspace.
 
-In Lab 2, you’ll learn one of the methods to load your kernel and user programs. Also, you’ll learn how to match a device to a driver on rpi3. The initialization of the remaining subsystems will be introduced at later labs.
+**啟動 (Booting)**是**計算機重置後設置運行各種用戶程序的環境的過程**。 它包括由引導加載程序加載的內核、子系統初始化、設備驅動程序匹配以及加載 init 用戶程序以在用戶空間中啟動其餘服務。
+
+在實驗 2 中，您將學習加載內核和用戶程序的方法之一。 此外，您還將了解如何將設備與 rpi3 上的驅動程序相匹配。 其餘子系統的初始化將在後面的實驗中介紹。
 
 ## Goals of this lab
-- Implement a bootloader that loads kernel images through UART.
-- Implement a simple allocator.
-- Understand what’s initial ramdisk.
-- Understand what’s devicetree.
+- 實現一個通過 UART 加載內核映像的引導加載程序。
+- 實現一個簡單的分配器。
+- 了解什麼是初始 ramdisk。
+- 了解什麼是 devicetree。
 
 ## Background
 ### How a Kernel is Loaded on Rpi3
-There are 4 steps before your kernel starts its execution.
-1. GPU executes the first stage bootloader from ROM on the SoC.
-2. The first stage bootloader recognizes the FAT16/32 file system and loads the second stage bootloader bootcode.bin from SD card to L2 cache.
-3. bootcode.bin initializes SDRAM and loads start.elf
-4. start.elf reads the configuration to load a kernel and other data to memory then wakes up CPUs to start execution.
-
-The kernel loaded at step 4 can also be another bootloader with more powerful functionalities such as network booting, or ELF loading.
-
-```
 在內核開始執行之前有 4 個步驟。
+
 1. GPU 從 SoC 上的 ROM 執行第一階段引導加載程序。
 2. 第一階段引導加載程序識別 FAT16/32 文件系統，並將第二階段引導加載程序 bootcode.bin 從 SD 卡加載到二級緩存。
 3. bootcode.bin初始化SDRAM並加載start.elf
 4. start.elf 讀取配置以將內核和其他數據加載到內存中，然後喚醒 CPU 開始執行。
 
 步驟 4 加載的內核也可以是另一個具有更強大功能的引導加載程序，例如網絡引導或 ELF 加載。
-```
 
-In Lab 2, you’ll **implement a bootloader that loads the actual kernel through UART, and it’s loaded by the previous stage bootloader**.
+在實驗 2 中，您將**實現一個通過 UART 加載實際內核的引導加載程序，並由前一階段的引導加載程序加載**。
 
 ## Exercises
 ### Basic Exercise 1 - UART Bootloader
-In Lab 1, you might experience the process of moving the SD card between your host and rpi3 very often during debugging. **You can eliminate this by introducing another bootloader to load the kernel under debugging.**
 
-To send binary through UART, you should devise a protocol to read raw data. It rarely drops data during transmission, so you can keep the protocol simple.
+在實驗 1 中，您可能會在調試過程中經常經歷在主機和 rpi3 之間移動 SD 卡的過程。 **您可以通過引入另一個引導加載程序來加載正在調試的內核來消除此問題。**
 
-You can effectively write data from the host to rpi3 by serial device’s device file in Linux.
+要通過 UART 發送二進製文件，您應該設計一個協議來讀取原始數據。 它在傳輸過程中很少丟失數據，因此您可以保持協議簡單。
+
+在Linux中可以通過串口設備的設備文件有效地將數據從主機寫入rpi3。
 
 ```
 with open('/dev/ttyUSB0', "wb", buffering = 0) as tty:
@@ -58,9 +51,9 @@ with open('/dev/ttyUSB0', "wb", buffering = 0) as tty:
 
 #### Config Kernel Loading Setting
 
-You may still want to load your actual kernel image at 0x80000, but it then overlaps with your bootloader. You can first specify the start address to another by **re-writing the linker script**. Then, add **config.txt** file to your SD card’s boot partition to specify the loading address by **kernel_address=**.
+您可能仍然想在 0x80000 處加載實際的內核映像，但它會與引導加載程序重疊。 您可以首先通過**重寫鏈接器腳本**來指定另一個起始地址。 然後，在SD卡的啟動分區添加**config.txt**文件，通過**kernel_address=**指定加載地址。
 
-To further make your bootloader less ambiguous with the actual kernel, you can add the loading image name by **kernel=** and **arm_64bit=1**
+為了進一步使您的引導加載程序與實際內核不那麼模糊，您可以通過 **kernel=** 和 **arm_64bit=1** 添加加載映像名稱
 
 ```
 kernel_address=0x60000
@@ -74,7 +67,7 @@ arm_64bit=1
 
 > **Important**
 > 
-> UART is a low-speed interface. It’s okay to send your kernel image because it’s quite small. Don’t use it to send large binary files.
+> UART 是一種低速接口。 發送你的 kernel image 是可以的，因為它很小。 不要用它來發送大型二進製文件。
 
 ```
 send_image_to_bootloader.py
@@ -82,25 +75,17 @@ send_image_to_bootloader.py
 
 ### Basic Exercise 2 - Initial Ramdisk
 
-After a kernel is initialized, it mounts a root filesystem and runs an init user program. The init program can be a script or executable binary to bring up other services or load other drivers later on.
-
-However, you haven’t implemented any filesystem and storage driver code yet, so you can’t load anything from the SD card using your kernel. Another approach is loading user programs through the initial ramdisk.
-
-An initial ramdisk is a file loaded by a bootloader or embedded in a kernel. It’s usually an archive that can be extracted to build a root filesystem.
-
-```
 初始化內核後，它會掛載一個根文件系統並運行一個init用戶程序。 init程序可以是一個腳本或可執行二進製文件，用於在稍後啟動其他服務或加載其他驅動程序。
 
 然而，由於您尚未實現任何文件系統和存儲驅動程序代碼，所以無法使用您的內核從SD卡加載任何內容。另一種方法是通過初始ramdisk加載用戶程序。
 
 初始ramdisk是由引導加載程序加載或嵌入在內核中的文件。它通常是一個歸檔文件，可以被提取出來以構建一個根文件系統。
-```
 
 #### New ASCII Format Cpio Archive
 
-Cpio is a very simple archive format to pack directories and files. Each directory and file is recorded as **a header followed by its pathname and content**.
+cpio 是一種非常簡單的壓縮目錄和文件的歸檔格式。 每個目錄和文件都記錄為**標頭，後跟其路徑名和內容**。
 
-In Lab 2, you are going to use the New ASCII Format Cpio format to create a cpio archive. You can first create a **rootfs** directory and put all files you need inside it. Then, use the following commands to archive it.
+在實驗 2 中，您將使用新 ASCII 格式 Cpio 格式創建 cpio 存檔。 您可以先創建一個 **rootfs** 目錄並將所需的所有文件放入其中。 然後，使用以下命令將其存檔。
 
 ```
 cd rootfs
@@ -113,7 +98,7 @@ cd ..
 #### Loading Cpio Archive
 
 **QEMU**
-Add the argument **-initrd <cpio archive>** to QEMU. QEMU loads the cpio archive file to 0x8000000 by default.
+將參數 **-initrd <cpio archive>** 添加到 QEMU。 默認情況下，QEMU 將 cpio 存檔文件加載到 0x8000000。
 
 > **Todo**
 > 
@@ -132,11 +117,11 @@ makefile
 
 ### Basic Exercise 3 - Simple Allocator
 
-Kernel needs an allocator in the progress of subsystem initialization. However, the dynamic allocator is also a subsystem that need to be initialized. So we need a simple allocator in the early stage of booting.
+內核在子系統初始化過程中需要一個分配器。 然而，動態分配器也是一個需要初始化的子系統。 所以我們在啟動初期需要一個簡單的分配器。
 
 > **Todo**
 > 
-> Implement a alloc function that returns a pointer points to a continuous space for requested size.
+> 實現一個 alloc 函數，該函數返回指向所請求大小的連續空間的指針。
 
 > **Hint**
 > 
@@ -158,29 +143,29 @@ int main() {
 
 ### Advanced Exercise 1 - Devicetree
 
-During the booting process, a kernel should know what devices are currently connected and use the corresponding driver to initialize and access it. For powerful buses such as PCIe and USB, the kernel can detect what devices are connected by querying the bus’s registers. Then, it matches the device’s name with all drivers and uses the compatible driver to initialize and access the device.
+在啟動過程中，內核應該知道當前連接了哪些設備，並使用相應的驅動程序來初始化和訪問它。 對於 PCIe 和 USB 等功能強大的總線，內核可以通過查詢總線的寄存器來檢測連接了哪些設備。 然後，它將設備的名稱與所有驅動程序相匹配，並使用兼容的驅動程序來初始化和訪問設備。
 
-However, for a computer system with a simple bus, a kernel can’t detect what devices are connected. One approach to drive these devices is as you did in Lab 1; developers know what’s the target machine to be run on and hard code the io memory address in their kernel. It turns out the driver code becomes not portable.
+然而，對於具有簡單總線的計算機系統，內核無法檢測連接了哪些設備。 驅動這些設備的一種方法就像您在實驗 1 中所做的那樣； 開發人員知道要運行的目標機器是什麼，並在其內核中硬編碼 io 內存地址。 事實證明，驅動程序代碼變得不可移植。
 
-A cleaner approach is a file describing what devices are on a computer system. Also, it records the properties and relationships between each device. Then, a kernel can query this file as querying like powerful bus systems to load the correct driver. The file is called deivcetree.
+更簡潔的方法是使用一個文件來描述計算機系統上的設備。 此外，它還記錄每個設備之間的屬性和關係。 然後，內核可以像查詢強大的總線系統一樣查詢該文件以加載正確的驅動程序。 該文件名為 deivcetree。
 
 #### Format
 
-Devicetree has two formats devicetree source(dts) and flattened devicetree(dtb). Devicetree source describes device tree in human-readable form. It’s then compiled into flattened devicetree so the parsing can be simpler and faster in slow embedded systems.
+Devicetree 有兩種格式 devicetree source (dts) 和 flattened devicetree (dtb)。 Devicetree 源代碼以人類可讀的形式描述了設備樹。 然後它被編譯成扁平化的設備樹，因此在慢速嵌入式系統中解析可以更簡單、更快。
 
-You can read rpi3’s dts from raspberry pi’s linux repository
+您可以從樹莓派的linux存儲庫中讀取rpi3的dts
 
-You can get rpi3’s dtb by either compiling it manually or downloading the off-the-shelf one.
+你可以通過手動編譯或者下載現成的來獲取rpi3的dtb。
 
 #### Parsing
 
-In this advanced part, you should implement a parser to parse the flattened devicetree. Besides, your kernel should provide an interface that takes a callback function argument. So a driver code can walk the entire devicetree to query each device node and match itself by checking the node’s name and properties.
+在這個高級部分中，您應該實現一個解析器來解析扁平化的設備樹。 此外，您的內核應該提供一個帶有回調函數參數的接口。 因此，驅動程序代碼可以遍歷整個設備樹來查詢每個設備節點，並通過檢查節點的名稱和屬性來匹配自身。
 
-You can get the latest specification from the devicetree’s official website. Then follow the order Chapter 5, 2, 3 and read rpi3’s dts to implement your parser.
+您可以從devicetree的官方網站獲取最新的規格。 然後按照第5、2、3章的順序閱讀rpi3的dts來實現你的解析器。
 
 #### Dtb Loading
 
-A bootloader loads a dtb into memory and passes the loading address specified at register x0 to the kernel. Besides, it modifies the original dtb content to match the actual machine setting. For example, it adds the initial ramdisk’s loading address in dtb if you ask the bootloader to load an initial ramdisk.
+引導加載程序將 dtb 加載到內存中，並將寄存器 x0 中指定的加載地址傳遞給內核。 此外，它還修改了原始 dtb 內容以匹配實際機器設置。 例如，如果您要求引導加載程序加載初始 ramdisk，它會在 dtb 中添加初始 ramdisk 的加載地址。
 
 **QEMU**
 
@@ -192,7 +177,7 @@ Move bcm2710-rpi-3-b-plus.dtb into SD card.
 
 > **Todo**
 > 
-> Implement a parser that can iterate the device tree. Also, provide an API that takes a callback function, so the driver code can access the content of the device node during device tree iteration.
+> 實現一個可以迭代設備樹的解析器。 另外，提供一個帶有回調函數的 API，以便驅動程序代碼可以在設備樹迭代期間訪問設備節點的內容。
 
 The folloing code is a breif example of the API. You can design it in your own way.
 
@@ -218,6 +203,7 @@ int main() {
 
 ## Implement
 ### Generate initramfs.cpio
+
 ```console
 cd create_fs
 bash create_cpio.sh
