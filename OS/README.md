@@ -5,8 +5,13 @@ This course aims to introduce the **design and implementation of operating syste
 
 This course uses **Raspberry Pi 3 Model B+ (rpi3 for short)** as the hardware platform.
 
-### Broadcom BCM2837
-![image](https://github.com/yantong0116/C-Cpp/assets/51469882/d7af3bef-a680-463d-bda8-5cf1bacd680b)
+### Raspberry Pi Broadcom BCM2837
+
+https://tc.gts3.org/cs3210/2020/spring/l/lec05/lec05.html
+
+|  |  |
+| --- | --- |
+| ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/574ac2f5-90d2-40af-8fc2-ebcbfd3f4f60) | ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/fec02f71-3a09-4ddb-9e46-45adeef3f818) |
 
 ## Execute
 #### QEMU debug
