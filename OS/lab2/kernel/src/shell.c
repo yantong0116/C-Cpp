@@ -15,7 +15,7 @@ void* CPIO_DEFAULT_PLACE;
 
 struct CLI_CMDS cmd_list[CLI_MAX_CMD]=
 {
-    {.command="cat", .help="concatenate files and print on the standard output"},
+    {.command="cat", .help="cat [filename] concatenate files and print on the standard output"},
     {.command="dtb", .help="show device tree"},
     {.command="hello", .help="print Hello World!"},
     {.command="help", .help="print all available commands"},
@@ -97,7 +97,7 @@ void cli_print_banner()
 {
     uart_puts("\r\n");
     uart_puts("=======================================\r\n");
-    uart_puts("  Welcome to NYCU-OSC 2023 Lab2 Shell  \r\n");
+    uart_puts("  Welcome to 2023 OS Lab2 Shell  \r\n");
     uart_puts("=======================================\r\n");
 }
 
