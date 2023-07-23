@@ -1,6 +1,12 @@
 # C-Cpp
 
-## Image Processing Algorithms
+### OS Concept
+- Lab 0: Environment Setup
+- Lab 1: Hello World
+- Lab 2: Booting
+- Lab 3: Exception and Interrupt
+
+### Image Processing Algorithms
 0. Start
 1. Threshold
 2. Mask
@@ -16,15 +22,6 @@
 12. Open and Close
 13. Dilation Erosion Open Close ker7x7
 14. Thinning
-
-## OS Concept
-Lab 0: Environment Setup
-
-Lab 1: Hello World
-
-Lab 2: Booting
-
-Lab 3: Exception and Interrupt
 
 ### References: 
 1. https://www.interviewbit.com/blog/c-projects/
