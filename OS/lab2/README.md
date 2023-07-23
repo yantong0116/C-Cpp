@@ -43,12 +43,6 @@ with open('/dev/ttyUSB0', "wb", buffering = 0) as tty:
 > 
 > You can use <font color="red">qemu-system-aarch64 -serial null -serial pty -M raspi3b</font> to create a pseudo TTY device and test your bootloader through it.
 
-![image](https://github.com/yantong0116/C-Cpp/assets/51469882/ca5506ce-134f-41e8-898c-82d0202be701)
-
-![image](https://github.com/yantong0116/C-Cpp/assets/51469882/124f2f9b-5e3b-4be6-97c2-3bf6b6b4a2d8)
-
-![image](https://github.com/yantong0116/C-Cpp/assets/51469882/55d41cb6-3609-4c6f-9a46-a31f26ee6fb1)
-
 #### Config Kernel Loading Setting
 
 您可能仍然想在 0x80000 處加載實際的內核映像，但它會與引導加載程序重疊。 您可以首先通過**重寫鏈接器腳本**來指定另一個起始地址。 然後，在SD卡的啟動分區添加**config.txt**文件，通過**kernel_address=**指定加載地址。
@@ -196,24 +190,3 @@ int main() {
 > **Todo**
 > 
 > Modify your bootloader for passing the device tree loading address.
-
----
-
-## Implement
-### Generate initramfs.cpio
-
-```console
-cd create_fs
-bash create_cpio.sh
-```
-
-### Copy create_fs/initramfs.cpio to kernel/initramfs.cpio
-### Generate kernel/build
-```console
-cd kernel
-make
-```
-
-```console
-make run
-```
