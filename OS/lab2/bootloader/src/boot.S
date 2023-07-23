@@ -22,6 +22,7 @@ wfe
 
 **/
 
+// x0 is used for dtb physical address
 .section ".text.boot"
 
 .global _start
@@ -42,6 +43,8 @@ init_bss:
     cbnz    w2, init_bss
 
 run_main:
+    ldr     x1, =_dtb
+    str     x0, [x1], #8
     bl      main
 
 proc_hang:

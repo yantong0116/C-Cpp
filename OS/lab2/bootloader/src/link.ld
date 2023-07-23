@@ -1,8 +1,8 @@
 _heap_stack_size = 1M;
+_bootloader_size = 64K;
 
 SECTIONS
 {
-    /* bootloader 0x60000, kernel 0x80000 */
     . = 0x80000;
     _start = .;
     .text : { *(.text.boot) *(.text) }
@@ -24,4 +24,9 @@ SECTIONS
     }
     _end = .;
 
+    . = 0x3000000;
+    _bootloader_relocated_addr = 0x3000000;
+    . = . + _bootloader_size;
 }
+
+__code_size = (_end - _start);

@@ -8,19 +8,21 @@
 #include "dtb.h"
 #include "heap.h"
 
-#define CLI_MAX_CMD 6
+#define CLI_MAX_CMD 8
 
 extern char* dtb_ptr;
 void* CPIO_DEFAULT_PLACE;
 
 struct CLI_CMDS cmd_list[CLI_MAX_CMD]=
 {
+    {.command="cat", .help="concatenate files and print on the standard output"},
     {.command="dtb", .help="show device tree"},
     {.command="hello", .help="print Hello World!"},
     {.command="help", .help="print all available commands"},
     {.command="malloc", .help="simple allocator in heap session"},
     {.command="info", .help="get device information via mailbox"},
-    {.command="ls", .help="list directory contents"}
+    {.command="ls", .help="list directory contents"},
+    {.command="reboot", .help="reboot the device"}
 };
 
 void cli_cmd_clear(char* buffer, int length)
@@ -72,7 +74,9 @@ void cli_cmd_exec(char* buffer)
         buffer++;
     }
 
-    if (strcmp(cmd, "dtb") == 0){
+    if (strcmp(cmd, "cat") == 0) {
+        do_cmd_cat(argvs);
+    } else if (strcmp(cmd, "dtb") == 0){
         do_cmd_dtb();
     } else if (strcmp(cmd, "hello") == 0) {
         do_cmd_hello();
@@ -84,6 +88,8 @@ void cli_cmd_exec(char* buffer)
         do_cmd_malloc();
     } else if (strcmp(cmd, "ls") == 0) {
         do_cmd_ls(argvs);
+    } else if (strcmp(cmd, "reboot") == 0) {
+        do_cmd_reboot();
     }
 }
 
@@ -93,6 +99,34 @@ void cli_print_banner()
     uart_puts("=======================================\r\n");
     uart_puts("  Welcome to NYCU-OSC 2023 Lab2 Shell  \r\n");
     uart_puts("=======================================\r\n");
+}
+
+void do_cmd_cat(char* filepath)
+{
+    char* c_filepath;
+    char* c_filedata;
+    unsigned int c_filesize;
+    struct cpio_newc_header *header_ptr = CPIO_DEFAULT_PLACE;
+
+    while(header_ptr!=0)
+    {
+        int error = cpio_newc_parse_header(header_ptr, &c_filepath, &c_filesize, &c_filedata, &header_ptr);
+        //if parse header error
+        if(error)
+        {
+            uart_puts("cpio parse error");
+            break;
+        }
+
+        if(strcmp(c_filepath, filepath)==0)
+        {
+            uart_puts("%s", c_filedata);
+            break;
+        }
+
+        //if this is TRAILER!!! (last of file)
+        if(header_ptr==0) uart_puts("cat: %s: No such file or directory\n", filepath);
+    }
 }
 
 void do_cmd_dtb()
@@ -191,3 +225,14 @@ void do_cmd_ls(char* workdir)
         if(header_ptr!=0) uart_puts("%s\n", c_filepath);
     }
 }
+
+
+void do_cmd_reboot()
+{
+    uart_puts("Reboot in 5 seconds ...\r\n\r\n");
+    volatile unsigned int* rst_addr = (unsigned int*)PM_RSTC;
+    *rst_addr = PM_PASSWORD | 0x20;
+    volatile unsigned int* wdg_addr = (unsigned int*)PM_WDOG;
+    *wdg_addr = PM_PASSWORD | 5;
+}
+
