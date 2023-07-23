@@ -92,7 +92,7 @@ find . | cpio -o -H newc > ../initramfs.cpio
 cd ..
 ```
 
-Freebsd’s man page has a detailed definition of how New ASCII Format Cpio Archive is structured. You should read it and implement a parser to read files in the archive.
+<a href="https://man.freebsd.org/cgi/man.cgi?query=cpio&sektion=5">Freebsd’s man page</a> has a detailed definition of how New ASCII Format Cpio Archive is structured. You should read it and implement a parser to read files in the archive.
 
 #### Loading Cpio Archive
 
