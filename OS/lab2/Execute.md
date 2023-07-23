@@ -7,15 +7,19 @@
 
 ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/55d41cb6-3609-4c6f-9a46-a31f26ee6fb1)
 
-
+```
+send_image_to_bootloader.py
+```
 
 ## Exercise 2
 ### Initial Ramdisk
 
 #### Generate initramfs.cpio
+
 ```
 cd create_fs
-./create_cpio.sh
+create_cpio.sh
+makefile
 ```
 
 #### In makefile
