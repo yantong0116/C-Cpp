@@ -104,8 +104,6 @@ cd ..
 > 
 > Parse New ASCII Format Cpio archive, and read file’s content given file’s pathname.
 
-![image](https://github.com/yantong0116/OS/assets/51469882/bf9e8bda-e679-4850-a4af-d4cd19b60fac)
-
 > **Important**
 > 
 > In Lab 2, you only need to **put some plain text files inside your archive** to test the functionality. In the later labs, you will also put script files and executables inside to automate the testing.
