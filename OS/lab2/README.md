@@ -118,6 +118,7 @@ initramfs initramfs.cpio 0x20000000
 ![image](https://github.com/yantong0116/OS/assets/51469882/bf9e8bda-e679-4850-a4af-d4cd19b60fac)
 
 > **Important**
+> 
 > In Lab 2, you only need to **put some plain text files inside your archive** to test the functionality. In the later labs, you will also put script files and executables inside to automate the testing.
 
 ### Basic Exercise 3 - Simple Allocator
@@ -133,6 +134,7 @@ Kernel needs an allocator in the progress of subsystem initialization. However, 
 > Your allocator don’t need to support free function.
 
 The folloing code is a breif example:
+
 ```
 void* simple_malloc(size_t size) {
   ...
@@ -220,5 +222,3 @@ make
 ```console
 make run
 ```
-
-
