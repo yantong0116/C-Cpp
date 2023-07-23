@@ -21,11 +21,21 @@ There are 4 steps before your kernel starts its execution.
 
 The kernel loaded at step 4 can also be another bootloader with more powerful functionalities such as network booting, or ELF loading.
 
+```
+在內核開始執行之前有 4 個步驟。
+1. GPU 從 SoC 上的 ROM 執行第一階段引導加載程序。
+2. 第一階段引導加載程序識別 FAT16/32 文件系統，並將第二階段引導加載程序 bootcode.bin 從 SD 卡加載到二級緩存。
+3. bootcode.bin初始化SDRAM並加載start.elf
+4. start.elf 讀取配置以將內核和其他數據加載到內存中，然後喚醒 CPU 開始執行。
+
+步驟 4 加載的內核也可以是另一個具有更強大功能的引導加載程序，例如網絡引導或 ELF 加載。
+```
+
 In Lab 2, you’ll **implement a bootloader that loads the actual kernel through UART, and it’s loaded by the previous stage bootloader**.
 
 ## Exercises
 ### Basic Exercise 1 - UART Bootloader
-In Lab 1, you might experience the process of moving the SD card between your host and rpi3 very often during debugging. You can eliminate this by introducing another bootloader to load the kernel under debugging.
+In Lab 1, you might experience the process of moving the SD card between your host and rpi3 very often during debugging. **You can eliminate this by introducing another bootloader to load the kernel under debugging.**
 
 To send binary through UART, you should devise a protocol to read raw data. It rarely drops data during transmission, so you can keep the protocol simple.
 
@@ -38,7 +48,9 @@ with open('/dev/ttyUSB0', "wb", buffering = 0) as tty:
 
 > __Hint__
 > 
-> You can use <font color="red">qemu-system-aarch64 -serial null -serial pty</font> to create a pseudo TTY device and test your bootloader through it.
+> You can use <font color="red">qemu-system-aarch64 -serial null -serial pty -M raspi3b</font> to create a pseudo TTY device and test your bootloader through it.
+
+![Alt text](image.png)
 
 #### Config Kernel Loading Setting
 
