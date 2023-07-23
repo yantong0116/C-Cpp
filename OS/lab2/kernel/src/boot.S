@@ -1,6 +1,6 @@
 /* ARMv8 Assembly Instruction */
-/**
 
+/**
 mov x0, x1
     sets: x0 = x1
 ldr x0, <addr>
@@ -19,7 +19,6 @@ bl  <label>
     jump to <label> and copies bl's next instruction into link register
 wfe
     Wait for event, core in low-power state (power on, clk off)
-
 **/
 
 .section ".text.boot"
