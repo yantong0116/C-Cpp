@@ -13,7 +13,7 @@ This course uses **Raspberry Pi 3 Model B+** as the hardware platform.
 
 | Raspberry Pi Broadcom BCM2837 | Raspberry Pi Broadcom BCM2837 Info |
 | --- | --- |
-| ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/574ac2f5-90d2-40af-8fc2-ebcbfd3f4f60) | ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/fec02f71-3a09-4ddb-9e46-45adeef3f818) |
+| ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/5b63aa4b-50ee-4ec2-9556-29995bcf2fb6) | ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/fec02f71-3a09-4ddb-9e46-45adeef3f818) |
 
 ![image](https://github.com/yantong0116/C-Cpp/assets/51469882/f372fa6e-6aa3-43e6-9f51-498e3c2a238a)
 
