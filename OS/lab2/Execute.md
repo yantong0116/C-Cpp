@@ -25,16 +25,15 @@ makefile
 #### In makefile
 qemu-system-aarch64 -M raspi3b -kernel kernel8.img -serial null -serial stdio **-initrd initramfs.cpio** -dtb bcm2710-rpi-3-b-plus.dtb
 
+![image](https://github.com/yantong0116/C-Cpp/assets/51469882/78eb58a5-8ffd-4f93-bbe4-23dd44616d87)
 
 ## Exercise 3
 ### Simple Allocator
 
-
+![image](https://github.com/yantong0116/C-Cpp/assets/51469882/d6e2acd8-ebaf-44fd-89b9-74c5ce330485)
 
 ## Advanced Exercise 1
 ### Devicetree
 
-
-
-
+![image](https://github.com/yantong0116/C-Cpp/assets/51469882/8c4330e7-b696-4f7d-ad5d-a0133d8bb600)
 
