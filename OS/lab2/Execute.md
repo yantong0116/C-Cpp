@@ -35,7 +35,5 @@ qemu-system-aarch64 -M raspi3b -kernel kernel8.img -serial null -serial stdio **
 ## Advanced Exercise 1
 ### Devicetree
 
-
-
-
+![image](https://github.com/yantong0116/C-Cpp/assets/51469882/8c4330e7-b696-4f7d-ad5d-a0133d8bb600)
 
