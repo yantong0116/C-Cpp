@@ -48,6 +48,73 @@ SECTIONS
 }
 ```
 
+- send_image_to_bootloader.py
+
+```python
+#!/usr/bin/env python3
+
+from serial import Serial
+from pwn import *
+import argparse
+from sys import platform
+
+if platform == "linux" or platform == "linux2":
+    parser = argparse.ArgumentParser(description='NYCU OSDI kernel sender')
+    parser.add_argument('--filename', metavar='PATH', default='kernel8.img', type=str, help='path to kernel8.img')
+    parser.add_argument('--device', metavar='TTY',default='/dev/ttyUSB0', type=str,  help='path to UART device')
+    parser.add_argument('--baud', metavar='Hz',default=115200, type=int,  help='baud rate')
+    args = parser.parse_args()
+
+    with open(args.filename,'rb') as fd:
+        with Serial(args.device, args.baud) as ser:
+
+            kernel_raw = fd.read()
+            length = len(kernel_raw)
+
+            print("Kernel image size : ", hex(length))
+            for i in range(8):
+                ser.write(p64(length)[i:i+1])
+                ser.flush()
+
+            print("Start sending kernel image by uart1...")
+            for i in range(length):
+                # Use kernel_raw[i: i+1] is byte type. Instead of using kernel_raw[i] it will retrieve int type then cause error
+                ser.write(kernel_raw[i: i+1])
+                ser.flush()
+                if i % 100 == 0:
+                    print("{:>6}/{:>6} bytes".format(i, length))
+            print("{:>6}/{:>6} bytes".format(length, length))
+            print("Transfer finished!")
+
+else:
+    parser = argparse.ArgumentParser(description='NYCU OSDI kernel sender')
+    parser.add_argument('--filename', metavar='PATH', default='kernel8.img', type=str, help='path to kernel8.img')
+    parser.add_argument('--device', metavar='COM',default='COM3', type=str,  help='COM# to UART device')
+    parser.add_argument('--baud', metavar='Hz',default=115200, type=int,  help='baud rate')
+    args = parser.parse_args()
+
+    with open(args.filename,'rb') as fd:
+        with Serial(args.device, args.baud) as ser:
+
+            kernel_raw = fd.read()
+            length = len(kernel_raw)
+
+            print("Kernel image size : ", hex(length))
+            for i in range(8):
+                ser.write(p64(length)[i:i+1])
+                ser.flush()
+
+            print("Start sending kernel image by uart1...")
+            for i in range(length):
+                # Use kernel_raw[i: i+1] is byte type. Instead of using kernel_raw[i] it will retrieve int type then cause error
+                ser.write(kernel_raw[i: i+1])
+                ser.flush()
+                if i % 100 == 0:
+                    print("{:>6}/{:>6} bytes".format(i, length))
+            print("{:>6}/{:>6} bytes".format(length, length))
+            print("Transfer finished!")
+```
+
 - uart1.c
 
 ```c
@@ -104,7 +171,6 @@ char uart_recv() {
 }
 
 // 0x20 是因為 UART Line Status Register (LSR) 的第 5 位是 Transmitter Empty (TEMT) 位，而不是第 4 位。
-
 // UART LSR 寄存器是一個 8 位寄存器，每一位表示 UART 的不同狀態。在 LSR 寄存器中，第 5 位（從右往左數）對應於 Transmitter Empty (TEMT) 位。當該位被設置為 1 時，表示 UART 發送保持寄存器 (THR) 是空的，即 UART 已準備好接收新的數據進行發送。
 
 void uart_send(unsigned int c) {
@@ -140,5 +206,105 @@ void uart_2hex(unsigned int d) {
 }
 ```
 
+- cpio.c
+
+```c
+// 這段代碼是一個用於解析cpio新c格式的文件頭的函數。 
+// cpio是一個用於歸檔和備份文件的Unix工具，而cpio新c格式是cpio的一種變種，它使用固定的ASCII格式頭來描述歸檔中的文件和目錄。
+
+#include "cpio.h"
+#include "utils.h"
+
+/* Parse an ASCII hex string into an integer. */
+static unsigned int parse_hex_str(char *s, unsigned int max_len)
+{
+    unsigned int r = 0;
+
+    for (unsigned int i = 0; i < max_len; i++) {
+        r *= 16;
+        if (s[i] >= '0' && s[i] <= '9') {
+            r += s[i] - '0';
+        }  else if (s[i] >= 'a' && s[i] <= 'f') {
+            r += s[i] - 'a' + 10;
+        }  else if (s[i] >= 'A' && s[i] <= 'F') {
+            r += s[i] - 'A' + 10;
+        } else {
+            return r;
+        }
+    }
+    return r;
+}
+
+
+/* 將路徑名，數據，下一個標頭寫入相應的參數 */
+/* 如果沒有下一個標頭，則next_header_pointer = 0 */
+/* 返回-1如果解析錯誤 */
+int cpio_newc_parse_header(struct cpio_newc_header *this_header_pointer, char **pathname, unsigned int *filesize, char **data, struct cpio_newc_header **next_header_pointer)
+{
+    /* Ensure magic header exists. */
+    if (strncmp(this_header_pointer->c_magic, CPIO_NEWC_HEADER_MAGIC, sizeof(this_header_pointer->c_magic)) != 0) return -1;
+
+    // transfer big endian 8 byte hex string to unsigned int and store into *filesize
+    *filesize = parse_hex_str(this_header_pointer->c_filesize,8);
+
+    // end of header is the pathname
+    *pathname = ((char *)this_header_pointer) + sizeof(struct cpio_newc_header); 
+
+    // get file data, file data is just after pathname
+    unsigned int pathname_length = parse_hex_str(this_header_pointer->c_namesize,8);
+    unsigned int offset = pathname_length + sizeof(struct cpio_newc_header);
+    // The file data is padded to a multiple of four bytes
+    offset = offset % 4 == 0 ? offset:(offset+4-offset%4);
+    *data = (char *)this_header_pointer+offset;
+
+    // get next header pointer
+    if(*filesize==0)
+    {
+        *next_header_pointer = (struct cpio_newc_header*)*data;
+    }else{
+        offset = *filesize;
+        *next_header_pointer = (struct cpio_newc_header*)(*data + (offset%4==0?offset:(offset+4-offset%4)));
+    }
+
+    // if filepath is TRAILER!!! means there is no more files.
+    if(strncmp(*pathname,"TRAILER!!!", sizeof("TRAILER!!!"))==0)
+    {
+        *next_header_pointer = 0;
+    }
+
+    return 0;
+}
+```
+
+- heap.c
+
+```c
+#include "heap.h"
+
+// 聲明一個名為 `_heap_top` 的全局變量，該變量用於表示堆內存的頂部。
+extern char _heap_top;
+// 定義一個名為 `htop_ptr` 的靜態變量，並將其初始化為 `_heap_top` 變量的地址。這將用於跟踪堆內存的當前位置。
+static char* htop_ptr = &_heap_top;
+
+// 用於在堆內存中分配一塊指定大小的內存空間。它接受一個參數 `size`，表示需要分配的內存大小，返回一個指向分配的內存塊的指針。
+void* malloc(unsigned int size) {
+    // -> htop_ptr
+    // htop_ptr + 0x02:  heap_block size
+    // htop_ptr + 0x10 ~ htop_ptr + 0x10 * k:
+    //            { heap_block }
+    // -> htop_ptr
+
+    // 在堆內存中分配的內存塊將包含一個 16 字節（0x10）的頭部信息
+    char* r = htop_ptr + 0x10;
+    // 將要分配的內存大小調整為 16 字節對齊，即向上取整到最接近的 16 字節倍數
+    size = 0x10 + size - size % 0x10;
+    // 在內存塊頭部（偏移量為 -0x8）存儲該內存塊的大小。
+    *(unsigned int*)(r - 0x8) = size;
+    // 將 `htop_ptr` 更新為指向下一個可用的堆內存地址，即將其移動到剛分配的內存塊之後
+    htop_ptr += size;
+    // 返回指向分配內存塊的指針
+    return r;
+}
+```
 
 

@@ -101,34 +101,6 @@ void cli_print_banner()
     uart_puts("=======================================\r\n");
 }
 
-void do_cmd_cat(char* filepath)
-{
-    char* c_filepath;
-    char* c_filedata;
-    unsigned int c_filesize;
-    struct cpio_newc_header *header_ptr = CPIO_DEFAULT_PLACE;
-
-    while(header_ptr!=0)
-    {
-        int error = cpio_newc_parse_header(header_ptr, &c_filepath, &c_filesize, &c_filedata, &header_ptr);
-        //if parse header error
-        if(error)
-        {
-            uart_puts("cpio parse error");
-            break;
-        }
-
-        if(strcmp(c_filepath, filepath)==0)
-        {
-            uart_puts("%s", c_filedata);
-            break;
-        }
-
-        //if this is TRAILER!!! (last of file)
-        if(header_ptr==0) uart_puts("cat: %s: No such file or directory\n", filepath);
-    }
-}
-
 void do_cmd_dtb()
 {
     traverse_device_tree(dtb_ptr, dtb_callback_show_tree);
@@ -215,8 +187,7 @@ void do_cmd_ls(char* workdir)
     {
         int error = cpio_newc_parse_header(header_ptr, &c_filepath, &c_filesize, &c_filedata, &header_ptr);
         //if parse header error
-        if(error)
-        {
+        if(error){
             uart_puts("cpio parse error");
             break;
         }
@@ -226,6 +197,33 @@ void do_cmd_ls(char* workdir)
     }
 }
 
+void do_cmd_cat(char* filepath)
+{
+    char* c_filepath;
+    char* c_filedata;
+    unsigned int c_filesize;
+    struct cpio_newc_header *header_ptr = CPIO_DEFAULT_PLACE;
+
+    while(header_ptr!=0)
+    {
+        int error = cpio_newc_parse_header(header_ptr, &c_filepath, &c_filesize, &c_filedata, &header_ptr);
+        //if parse header error
+        if(error)
+        {
+            uart_puts("cpio parse error");
+            break;
+        }
+
+        if(strcmp(c_filepath, filepath)==0)
+        {
+            uart_puts("%s", c_filedata);
+            break;
+        }
+
+        //if this is TRAILER!!! (last of file)
+        if(header_ptr==0) uart_puts("cat: %s: No such file or directory\n", filepath);
+    }
+}
 
 void do_cmd_reboot()
 {
